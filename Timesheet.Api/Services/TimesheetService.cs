@@ -4,13 +4,13 @@ using static Timesheet.Api.Services.AuthService;
 
 namespace Timesheet.Api.Services
 {
-    public class TimesheetService
+    public class TimesheetService : ITimeSheetService
     {
         public bool TrackTime(TimeLog timeLog)
         {
             bool isValid = timeLog.WorkingHours > 0 && timeLog.WorkingHours <= 24 && !string.IsNullOrWhiteSpace(timeLog.LastName);
 
-            isValid = isValid && UserSessions.Sessions.Contains(timeLog.LastName);
+            isValid = UserSessions.Sessions.Contains(timeLog.LastName) && isValid;
 
             if (!isValid)
             {

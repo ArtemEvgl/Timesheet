@@ -20,6 +20,7 @@ namespace Timesheet.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<ITimeSheetService, TimesheetService>();
             services.AddControllers();
         }
 

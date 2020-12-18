@@ -1,4 +1,5 @@
-﻿using Timesheet.Api.Models;
+﻿using System.Linq;
+using Timesheet.Api.Models;
 
 namespace Timesheet.Api.Services
 {
@@ -8,7 +9,7 @@ namespace Timesheet.Api.Services
         {
             return new EmployeeReport
             {
-                LastName = lastName
+                LastName = lastName,
             };
         }
     }
