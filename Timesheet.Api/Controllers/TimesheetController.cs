@@ -3,8 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Timesheet.Api.Models;
-using Timesheet.Api.Services;
+using Timesheet.Domain;
+using Timesheet.Domain.Models;
 
 namespace Timesheet.Api.Controllers
 {

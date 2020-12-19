@@ -1,6 +1,6 @@
 using NUnit.Framework;
-using Timesheet.Api.Services;
-using static Timesheet.Api.Services.AuthService;
+using Timesheet.Application.Services;
+using static Timesheet.Application.Services.AuthService;
 
 namespace Timesheet.Tests
 {

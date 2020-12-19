@@ -8,5 +8,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Timesheet.Application\Timesheet.Application.csproj" />
+    <ProjectReference Include="..\Timesheet.DataAccess.csv\Timesheet.DataAccess.csv.csproj" />
+  </ItemGroup>
+
 
 </Project>

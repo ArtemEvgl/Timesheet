@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Timesheet.Api.Services;
+using Timesheet.Application.Services;
+using Timesheet.Domain;
 
 namespace Timesheet.Api
 {

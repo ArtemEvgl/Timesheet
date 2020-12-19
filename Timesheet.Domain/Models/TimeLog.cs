@@ -1,7 +1,7 @@
 ﻿using System;
 
 
-namespace Timesheet.Api.Models
+namespace Timesheet.Domain.Models
 {
     public class TimeLog
     {

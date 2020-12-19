@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Timesheet.Api.ResourceModels;
-using Timesheet.Api.Services;
+using Timesheet.Domain;
 
 namespace Timesheet.Api.Controllers
 {

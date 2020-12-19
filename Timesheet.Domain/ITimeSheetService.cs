@@ -1,6 +1,6 @@
-﻿using Timesheet.Api.Models;
+﻿using Timesheet.Domain.Models;
 
-namespace Timesheet.Api.Services
+namespace Timesheet.Domain
 {
     public interface ITimeSheetService
     {

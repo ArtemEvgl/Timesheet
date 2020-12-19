@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Timesheet.Api.Models
+namespace Timesheet.Domain.Models
 {
     /// <summary>
     /// Отчет по сотруднику: [Имя сотрудника] за период за период с[дата начала] по[дата окончания]
