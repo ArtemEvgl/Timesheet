@@ -1,4 +1,4 @@
-using NUnit.Framework;
+п»їusing NUnit.Framework;
 using Timesheet.Application.Services;
 using static Timesheet.Application.Services.AuthService;
 
@@ -11,9 +11,9 @@ namespace Timesheet.Tests
         {
         }
 
-        [TestCase("Иванов")]
-        [TestCase("Петров")]
-        [TestCase("Сидоров")]
+        [TestCase("РРІР°РЅРѕРІ")]
+        [TestCase("РџРµС‚СЂРѕРІ")]
+        [TestCase("РЎРёРґРѕСЂРѕРІ")]
         public void Login_ShouldReturnTrue(string lastName)
         {
             //arrange
@@ -34,7 +34,7 @@ namespace Timesheet.Tests
         public void Login_InvokeLoginTwiceForOneLastName_ShouldReturnTrue()
         {
             //arrange
-            string lastName = "Сидоров";
+            string lastName = "Г‘ГЁГ¤Г®Г°Г®Гў";
             var service = new AuthService();
 
             //act
