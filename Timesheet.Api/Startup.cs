@@ -24,6 +24,9 @@ namespace Timesheet.Api
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<ITimesheetRepository, TimesheetRepository>();
             services.AddTransient<ITimeSheetService, TimesheetService>();
+            services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+            services.AddTransient<IEmployeeService, EmployeeService>();
+            services.AddTransient<IReportService, ReportService>();
             services.AddControllers();
         }
 
