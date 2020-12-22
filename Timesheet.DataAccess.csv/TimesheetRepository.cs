@@ -24,10 +24,10 @@ namespace Timesheet.DataAccess.csv
         public TimeLog[] GetTimeLogs(string lastName)
         {
             var data = File.ReadAllText(PATH);
-
-            var timeLogs = new List<TimeLog>();
-
-            foreach (var dataRow in data.Split('\n'))
+            var dataRows = data.Split(new char[] {'\n'}, StringSplitOptions.RemoveEmptyEntries);
+            var timeLogs = new List<TimeLog>();             
+            
+            foreach (var dataRow in dataRows)
             {
                 var timeLog = new TimeLog();
 
@@ -37,6 +37,8 @@ namespace Timesheet.DataAccess.csv
                 timeLog.Date = DateTime.TryParse(dataMembers[1], out var date) ? date : new DateTime();
                 timeLog.LastName = dataMembers[2];
                 timeLog.WorkingHours = int.TryParse(dataMembers[3], out var workingHours) ? workingHours : 0;
+                
+                timeLogs.Add(timeLog);
             }
 
             return timeLogs.ToArray();
