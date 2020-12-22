@@ -1,5 +1,8 @@
-﻿using NUnit.Framework;
+﻿using Moq;
+using NUnit.Framework;
 using Timesheet.Application.Services;
+using Timesheet.Domain;
+using Timesheet.Domain.Models;
 using static Timesheet.Application.Services.AuthService;
 
 namespace Timesheet.Tests
@@ -17,25 +20,46 @@ namespace Timesheet.Tests
         public void Login_ShouldReturnTrue(string lastName)
         {
             //arrange
-            var service = new AuthService();
-
+            var employeeRepositoryMock = new Mock<IEmployeeRepository>();
+            employeeRepositoryMock.
+                Setup(x => x.GetEmployee(It.Is<string>(y => y == lastName)))
+                .Returns(() => new StaffEmployee
+                {
+                    LastName = lastName,
+                    Salary = 70000
+                })
+                .Verifiable();
+            
+            var service = new AuthService(employeeRepositoryMock.Object);
             //act
 
             var result = service.Login(lastName);
 
             //assert
+            employeeRepositoryMock.VerifyAll();
+
             Assert.IsNotNull(UserSessions.Sessions);
             Assert.IsNotEmpty(UserSessions.Sessions);
             Assert.IsTrue(UserSessions.Sessions.Contains(lastName));
             Assert.IsTrue(result);
         }
 
-        
+
         public void Login_InvokeLoginTwiceForOneLastName_ShouldReturnTrue()
         {
             //arrange
-            string lastName = "Ñèäîðîâ";
-            var service = new AuthService();
+            string lastName = "Иванов";
+            var employeeRepositoryMock = new Mock<IEmployeeRepository>();
+            employeeRepositoryMock.
+                Setup(x => x.GetEmployee(It.Is<string>(y => y == lastName)))
+                .Returns(() => new StaffEmployee
+                {
+                    LastName = lastName,
+                    Salary = 70000
+                })
+                .Verifiable();
+
+            var service = new AuthService(employeeRepositoryMock.Object);
 
             //act
 
@@ -43,6 +67,8 @@ namespace Timesheet.Tests
             result = service.Login(lastName);
 
             //assert
+            employeeRepositoryMock.VerifyAll();
+
             Assert.IsNotNull(UserSessions.Sessions);
             Assert.IsNotEmpty(UserSessions.Sessions);
             Assert.IsTrue(UserSessions.Sessions.Contains(lastName));
@@ -55,13 +81,21 @@ namespace Timesheet.Tests
         public void Login_ShouldReturnFalse(string lastName)
         {
             //arrange
-            var service = new AuthService();
+            var employeeRepositoryMock = new Mock<IEmployeeRepository>();
+            employeeRepositoryMock.
+                Setup(x => x.GetEmployee(It.Is<string>(y => y == lastName)))
+                .Returns(() => null)
+                .Verifiable();
+
+            var service = new AuthService(employeeRepositoryMock.Object);
 
             //act
 
             var result = service.Login(lastName);
 
             //assert
+            //employeeRepositoryMock.VerifyAll(); не подходит для данных тест кейсов
+
             Assert.IsFalse(result);
         }
     }
