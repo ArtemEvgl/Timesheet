@@ -4,7 +4,7 @@ using Timesheet.Domain.Models;
 
 namespace Timesheet.Application.Services
 {
-    public class ReportService
+    public class ReportService : IReportService
     {
         private const decimal MAX_WORKING_HOURS_PER_MONTH = 160;
         private const decimal MAX_WORKING_HOURS_PER_DAY = 8;
@@ -59,7 +59,9 @@ namespace Timesheet.Application.Services
                 LastName = employee.LastName,
                 TimeLogs = timeLogs.ToList(),
                 Bill = bill,
-                TotalHours = totalHours
+                TotalHours = totalHours,
+                StartDate = timeLogs.Select(t => t.Date).Min(),
+                EndDate = timeLogs.Select(t => t.Date).Max()
             };
         }
     }
