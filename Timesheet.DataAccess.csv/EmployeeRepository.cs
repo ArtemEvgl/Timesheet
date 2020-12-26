@@ -1,5 +1,6 @@
 ﻿
 
+using System;
 using System.IO;
 using Timesheet.Domain;
 using Timesheet.Domain.Models;
@@ -20,20 +21,25 @@ namespace Timesheet.DataAccess.csv
         public StaffEmployee GetEmployee(string lastName)
         {
             var data = File.ReadAllText(PATH);
-            var dataMembers = data.Split('\n');
+            var dataRows = data.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
             StaffEmployee staffEmployee = null;
-            foreach (var dataMember in dataMembers)
+
+            foreach (var dataRow in dataRows)
             {
-                if (dataMember.Contains(lastName))
+                if (dataRow.Contains(lastName))
                 {
-                    var fields = dataMember.Split(DELIMETER);
-                    staffEmployee = new StaffEmployee()
+                    var dataMembers = dataRow.Split(DELIMETER);
+
+                    staffEmployee = new StaffEmployee
                     {
-                        LastName = fields[0],
-                        Salary = decimal.TryParse(fields[1], out decimal salary) ? salary : 0
+                        LastName = dataMembers[0],
+                        Salary = decimal.TryParse(dataMembers[1], out decimal salary) ? salary : 0
                     };
+
+                    break;
                 }
             }
+
             return staffEmployee;
         }
     }
