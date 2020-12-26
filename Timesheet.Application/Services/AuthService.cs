@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Timesheet.Domain;
-using Timesheet.Domain.Models;
 
 namespace Timesheet.Application.Services
 {
@@ -11,7 +10,6 @@ namespace Timesheet.Application.Services
         {
             _employeeRepository = employeeRepository;
         }
-
         
         public bool Login(string lastName)
         {
@@ -20,8 +18,8 @@ namespace Timesheet.Application.Services
                 return false;
             }
 
-            StaffEmployee staffEmployee = _employeeRepository.GetEmployee(lastName);
-            var isEmployeeExist = staffEmployee != null ? true : false;
+            var staffEmployee = _employeeRepository.GetEmployee(lastName);
+            var isEmployeeExist = staffEmployee != null;
 
             if (isEmployeeExist)
             {
