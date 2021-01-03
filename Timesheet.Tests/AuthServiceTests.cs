@@ -80,7 +80,7 @@ namespace Timesheet.Tests
         {
             //arrange
             var employeeRepositoryMock = new Mock<IEmployeeRepository>();
-         
+
             var service = new AuthService(employeeRepositoryMock.Object);
 
             //act
@@ -100,8 +100,9 @@ namespace Timesheet.Tests
             //arrange
             var employeeRepositoryMock = new Mock<IEmployeeRepository>();
 
-            employeeRepositoryMock
-                .Setup(x => x.GetEmployee(lastName))
+            employeeRepositoryMock.
+                Setup(x => x.GetEmployee(It.Is<string>(y => y == lastName)))
+
                 .Returns(() => null);
 
             var service = new AuthService(employeeRepositoryMock.Object);
@@ -110,7 +111,8 @@ namespace Timesheet.Tests
             var result = service.Login(lastName);
 
             //assert
-                employeeRepositoryMock.Verify(x => x.GetEmployee(lastName), Times.Once);
+
+            employeeRepositoryMock.Verify(x => x.GetEmployee(lastName), Times.Once);
 
             Assert.IsFalse(result);
             Assert.IsTrue(UserSessions.Sessions.Contains(lastName) == false);
