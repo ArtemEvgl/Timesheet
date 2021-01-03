@@ -53,7 +53,7 @@ namespace Timesheet.Tests
             var result = service.AddEmployee(staffEmployee);
 
             //assert
-            employeeRepository.Verify(x => x.AddEmployee(staffEmployee), Times.Never);
+            employeeRepository.Verify(x => x.AddEmployee(It.IsAny<StaffEmployee>()), Times.Never);
             Assert.IsFalse(result);
         }
     }
