@@ -8,22 +8,28 @@ namespace Timesheet.DataAccess.csv
 {
     public class TimesheetRepository : ITimesheetRepository
     {
-        private const char DELIMETER = ';';
-        private const string PATH = "..\\Timesheet.DataAccess.csv\\Data\\timesheet.csv";
+        private readonly char _delimeter;
+        private readonly string _path;
 
+        public TimesheetRepository(CsvSettings csvSettings)
+        {
+            _delimeter = csvSettings.Delimeter;
+            _path = csvSettings.Path + "\\timesheet.csv";
+        }
+        
         public void Add(TimeLog timeLog)
         {
-            var dataRow = $"{timeLog.Comment}{DELIMETER}" +
-                $"{timeLog.Date}{DELIMETER}" +
-                $"{timeLog.LastName}{DELIMETER}" +
+            var dataRow = $"{timeLog.Comment}{_delimeter}" +
+                $"{timeLog.Date}{_delimeter}" +
+                $"{timeLog.LastName}{_delimeter}" +
                 $"{timeLog.WorkingHours}\n";
 
-            File.AppendAllText(PATH, dataRow);
+            File.AppendAllText(_path, dataRow);
         }
 
         public TimeLog[] GetTimeLogs(string lastName)
         {
-            var data = File.ReadAllText(PATH);
+            var data = File.ReadAllText(_path);
             var dataRows = data.Split(new char[] {'\n'}, StringSplitOptions.RemoveEmptyEntries);
             var timeLogs = new List<TimeLog>();             
             
@@ -31,7 +37,7 @@ namespace Timesheet.DataAccess.csv
             {
                 var timeLog = new TimeLog();
 
-                var dataMembers = dataRow.Split(DELIMETER);
+                var dataMembers = dataRow.Split(_delimeter);
 
                 timeLog.Comment = dataMembers[0];
                 timeLog.Date = DateTime.TryParse(dataMembers[1], out var date) ? date : new DateTime();

@@ -9,25 +9,30 @@ namespace Timesheet.DataAccess.csv
 {
     public class EmployeeRepository : IEmployeeRepository
     {
-        private const char DELIMETER = ';';
-        private const string PATH = "..\\Timesheet.DataAccess.csv\\Data\\employees.csv";
+        private readonly char _delimeter;
+        private readonly string _path;
 
+        public EmployeeRepository(CsvSettings csvSettings)
+        {
+            _path = csvSettings.Path + "\\employees.csv";
+            _delimeter = csvSettings.Delimeter;
+        }
         public void AddEmployee(StaffEmployee staffEmployee)
         {
-            var dataRow = $"{staffEmployee.LastName}{DELIMETER}{staffEmployee.Salary}{DELIMETER}\n";
-            File.AppendAllText(PATH, dataRow);
+            var dataRow = $"{staffEmployee.LastName}{_delimeter}{staffEmployee.Salary}{_delimeter}\n";
+            File.AppendAllText(_path, dataRow);
         }
 
         public StaffEmployee GetEmployee(string lastName)
         {
-            var data = File.ReadAllText(PATH);
+            var data = File.ReadAllText(_path);
             var dataRows = data.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
             StaffEmployee staffEmployee = null;
             foreach (var dataRow in dataRows)
             {
                 if (dataRow.Contains(lastName))
                 {
-                    var dataMembers = dataRow.Split(DELIMETER);
+                    var dataMembers = dataRow.Split(_delimeter);
                     staffEmployee = new StaffEmployee()
                     {
                         LastName = dataMembers[0],
