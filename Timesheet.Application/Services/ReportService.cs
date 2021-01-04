@@ -8,6 +8,7 @@ namespace Timesheet.Application.Services
     {
         private const decimal MAX_WORKING_HOURS_PER_MONTH = 160;
         private const decimal MAX_WORKING_HOURS_PER_DAY = 8;
+        private const decimal BONUS_FOR_MANAGER = 20000;
 
         private readonly ITimesheetRepository _timesheetRepository;
         private readonly IEmployeeRepository _employeeRepository;
@@ -74,10 +75,9 @@ namespace Timesheet.Application.Services
 
                         if (dayHours > MAX_WORKING_HOURS_PER_DAY)
                         {
-                            var overtime = dayHours - MAX_WORKING_HOURS_PER_DAY;
-
-                            bill += MAX_WORKING_HOURS_PER_DAY / MAX_WORKING_HOURS_PER_MONTH * employee.Salary;
-                            bill += overtime / MAX_WORKING_HOURS_PER_MONTH * employee.Salary * 2;
+                            
+                            decimal bonusPerDay = MAX_WORKING_HOURS_PER_DAY / MAX_WORKING_HOURS_PER_MONTH * BONUS_FOR_MANAGER;
+                            bill += MAX_WORKING_HOURS_PER_DAY / MAX_WORKING_HOURS_PER_MONTH * employee.Salary + bonusPerDay;
                         }
                         else
                         {
@@ -90,27 +90,8 @@ namespace Timesheet.Application.Services
 
                 // freelancer
                 case "Сидоров":
-                {
-                    var workingHoursGroupsByDay = timeLogs
-                                            .GroupBy(x => x.Date.ToShortDateString());
-
-                    foreach (var workingLogsPerDay in workingHoursGroupsByDay)
-                    {
-                        int dayHours = workingLogsPerDay.Sum(x => x.WorkingHours);
-
-                        if (dayHours > MAX_WORKING_HOURS_PER_DAY)
-                        {
-                            var overtime = dayHours - MAX_WORKING_HOURS_PER_DAY;
-
-                            bill += MAX_WORKING_HOURS_PER_DAY / MAX_WORKING_HOURS_PER_MONTH * employee.Salary;
-                            bill += overtime / MAX_WORKING_HOURS_PER_MONTH * employee.Salary * 2;
-                        }
-                        else
-                        {
-                            bill += dayHours / MAX_WORKING_HOURS_PER_MONTH * employee.Salary;
-                        }
-                    }
-
+                {                   
+                    bill = totalHours * employee.Salary;
                     break;
                 }
 
@@ -129,10 +110,6 @@ namespace Timesheet.Application.Services
             };
         }
 
-        private void ChangeBill(EmployeeReport report)
-        {
-            report.Bill = 10;
-
-        }
+        
     }
 }
