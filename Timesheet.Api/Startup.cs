@@ -29,6 +29,9 @@ namespace Timesheet.Api
             services.AddTransient<IReportService, ReportService>();
             services.AddSingleton(x => new CsvSettings(';', "..\\Timesheet.DataAccess.csv\\Data"));
 
+
+            services.AddSingleton(x => new CsvSettings(';', "..\\Timesheet.DataAccess.csv\\Data"));
+
             services.AddControllers();
         }
 

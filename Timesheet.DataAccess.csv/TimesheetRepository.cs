@@ -16,7 +16,7 @@ namespace Timesheet.DataAccess.csv
             _delimeter = csvSettings.Delimeter;
             _path = csvSettings.Path + "\\timesheet.csv";
         }
-        
+
         public void Add(TimeLog timeLog)
         {
             var dataRow = $"{timeLog.Comment}{_delimeter}" +
