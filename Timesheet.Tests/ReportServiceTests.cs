@@ -10,13 +10,14 @@ namespace Timesheet.Tests
     class ReportServiceTests
     {
         [Test]
-        public void GetEmployeeReport_ShouldReturnReportPerOneMonth()
+        [TestCase("Иванов", 70000, 8750)] // (8+8+4)/160 * 70000
+        [TestCase("Петров", 70000, 8750)] // (8+8+4)/160 * 70000
+        [TestCase("Сидоров", 1000, 20000)] // (8+8+4) * 1000 
+        public void GetEmployeeReport_ShouldReturnReportPerDaysWithoutOvertime(string expectedLastName, decimal salary, decimal expectedTotal)
         {
             //arrange
             var timesheetRepositoryMock = new Mock<ITimesheetRepository>();
-            var employeeRepositoryMock = new Mock<IEmployeeRepository>();
-            var expectedLastName = "Иванов";
-            var expectedTotal = 8750m; // (8+8+4)/160 * 70000
+            var employeeRepositoryMock = new Mock<IEmployeeRepository>();            
             var expectedTotalHours = 20m; // (8+8+4)/160 * 70000
 
             timesheetRepositoryMock
@@ -52,7 +53,7 @@ namespace Timesheet.Tests
                 .Returns(() => new StaffEmployee
                 {
                     LastName = expectedLastName,
-                    Salary = 70000
+                    Salary = salary
                 })
                 .Verifiable();
 
@@ -75,15 +76,15 @@ namespace Timesheet.Tests
         }
 
         [Test]
-        public void GetEmployeeReport_ShouldReturnReportPerSeveralMonth()
+        [TestCase("Иванов", 60000, 106000)]// ставка за час = 60000 / 160 = 375; 35 * 8 * 375 + 1000 (где 1000 бонус руководителей за переработку, внезависимости от переработанных часов)
+        [TestCase("Петров", 60000, 105750)]// ставка за час = 60000 / 160 = 375; 35 * 8 * 375 + 375 * 1 * 2  (у сотрудников переработанный час в два раза больше оплачивается)
+        [TestCase("Сидоров", 1000, 281000)]// ставка за час = 1000; 1000 * 281
+        public void GetEmployeeReport_ShouldReturnReportPerSeveralMonth(string expectedLastName, decimal salary, decimal expectedTotal)
         {
             //arrange
             var timesheetRepositoryMock = new Mock<ITimesheetRepository>();
             var employeeRepositoryMock = new Mock<IEmployeeRepository>();
-            var expectedLastName = "Иванов";
-            // ставка за час = 60000 / 160 = 375
-            //  35 * 8 * 375 + 1 * 375 * 2
-            var expectedTotal = 105750m;
+            
             var expectedTotalHours = 281m;
 
             employeeRepositoryMock
@@ -91,7 +92,7 @@ namespace Timesheet.Tests
                 .Returns(() => new StaffEmployee
                 {
                     LastName = expectedLastName,
-                    Salary = 60000
+                    Salary = salary
                 })
                 .Verifiable();
 
@@ -139,12 +140,14 @@ namespace Timesheet.Tests
         }
 
         [Test]
-        public void GetEmployeeReport_WithoutTimeLogs_ShouldReturnReportPerOneMonth()
+        [TestCase("Иванов")]
+        [TestCase("Петров")]
+        [TestCase("Сидоров")]
+        public void GetEmployeeReport_WithoutTimeLogs(string expectedLastName)
         {
             //arrange
             var timesheetRepositoryMock = new Mock<ITimesheetRepository>();
             var employeeRepositoryMock = new Mock<IEmployeeRepository>();
-            var expectedLastName = "Иванов";
             var expectedTotal = 0m;
             var expectedTotalHours = 0;
 
@@ -181,13 +184,14 @@ namespace Timesheet.Tests
         }
 
         [Test]
-        public void GetEmployeeReport_TimeLogsForOneDay_ShouldReturnReportPerOneMonth()
+        [TestCase("Иванов", 70000, 3500)]// 8m / 160m * 70000m
+        [TestCase("Петров", 70000, 3500)]// 8m / 160m * 70000m
+        [TestCase("Сидоров", 1000, 8000)]// 8m * 1000 
+        public void GetEmployeeReport_TimeLogsForOneDay(string expectedLastName, decimal salary, decimal expectedTotal)
         {
             //arrange
             var timesheetRepositoryMock = new Mock<ITimesheetRepository>();
             var employeeRepositoryMock = new Mock<IEmployeeRepository>();
-            var expectedLastName = "Иванов";
-            var expectedTotal = 8m / 160m * 70000m;
             var expectedTotalHours = 8m;
 
             timesheetRepositoryMock
@@ -209,7 +213,7 @@ namespace Timesheet.Tests
                 .Returns(() => new StaffEmployee
                 {
                     LastName = expectedLastName,
-                    Salary = 70000
+                    Salary = salary
                 })
                 .Verifiable();
 
@@ -232,13 +236,14 @@ namespace Timesheet.Tests
         }
 
         [Test]
-        public void GetEmployeeReport_TimeLogWithOvertimeForOneDay_ShouldReturnReportPerOneMonth()
+        [TestCase("Иванов", 70000, 4500)]// 8m / 160m * 70000m + 1000 (у руководителей бонус 1000 за день вне зависимости от переаботанных часов)
+        [TestCase("Петров", 70000, 7000)]// 8m / 160m * 70000m + 4m / 160m * 70000m * 2
+        [TestCase("Сидоров", 1000, 12000)]// 12m * 1000 = 12000
+        public void GetEmployeeReport_TimeLogWithOvertimeForOneDay(string expectedLastName, decimal salary, decimal expectedTotal)
         {
             //arrange
             var timesheetRepositoryMock = new Mock<ITimesheetRepository>();
             var employeeRepositoryMock = new Mock<IEmployeeRepository>();
-            var expectedLastName = "Иванов";
-            var expectedTotal = 8m / 160m * 70000m + 4m / 160m * 70000m * 2;
             var expectedTotalHours = 12;
 
             timesheetRepositoryMock
@@ -260,7 +265,7 @@ namespace Timesheet.Tests
                 .Returns(() => new StaffEmployee
                 {
                     LastName = expectedLastName,
-                    Salary = 70000
+                    Salary = salary
                 })
                 .Verifiable();
 
