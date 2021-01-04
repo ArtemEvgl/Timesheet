@@ -29,7 +29,7 @@ namespace Timesheet.Tests
                     Salary = 70000
                 })
                 .Verifiable();
-            
+
             var service = new AuthService(employeeRepositoryMock.Object);
             //act
 
@@ -43,7 +43,6 @@ namespace Timesheet.Tests
             Assert.IsTrue(UserSessions.Sessions.Contains(lastName));
             Assert.IsTrue(result);
         }
-
 
         public void Login_InvokeLoginTwiceForOneLastName_ShouldReturnTrue()
         {
@@ -81,7 +80,7 @@ namespace Timesheet.Tests
         {
             //arrange
             var employeeRepositoryMock = new Mock<IEmployeeRepository>();
-            
+
             var service = new AuthService(employeeRepositoryMock.Object);
 
             //act
@@ -89,6 +88,7 @@ namespace Timesheet.Tests
 
             //assert
             employeeRepositoryMock.Verify(x => x.GetEmployee(lastName), Times.Never);
+
             Assert.IsFalse(result);
             Assert.IsEmpty(UserSessions.Sessions);
             Assert.IsTrue(UserSessions.Sessions.Contains(lastName) == false);
@@ -99,8 +99,10 @@ namespace Timesheet.Tests
         {
             //arrange
             var employeeRepositoryMock = new Mock<IEmployeeRepository>();
+
             employeeRepositoryMock.
                 Setup(x => x.GetEmployee(It.Is<string>(y => y == lastName)))
+
                 .Returns(() => null);
 
             var service = new AuthService(employeeRepositoryMock.Object);
@@ -109,6 +111,7 @@ namespace Timesheet.Tests
             var result = service.Login(lastName);
 
             //assert
+
             employeeRepositoryMock.Verify(x => x.GetEmployee(lastName), Times.Once);
 
             Assert.IsFalse(result);
