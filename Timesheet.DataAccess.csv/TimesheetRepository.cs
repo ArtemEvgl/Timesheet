@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Timesheet.Domain;
 using Timesheet.Domain.Models;
 
@@ -35,16 +36,20 @@ namespace Timesheet.DataAccess.csv
             
             foreach (var dataRow in dataRows)
             {
-                var timeLog = new TimeLog();
 
-                var dataMembers = dataRow.Split(_delimeter);
+                if (dataRow.Contains(lastName))
+                {
+                    var timeLog = new TimeLog();
 
-                timeLog.Comment = dataMembers[0];
-                timeLog.Date = DateTime.TryParse(dataMembers[1], out var date) ? date : new DateTime();
-                timeLog.LastName = dataMembers[2];
-                timeLog.WorkingHours = int.TryParse(dataMembers[3], out var workingHours) ? workingHours : 0;
-                
-                timeLogs.Add(timeLog);
+                    var dataMembers = dataRow.Split(_delimeter);
+
+                    timeLog.Comment = dataMembers[0];
+                    timeLog.Date = DateTime.TryParse(dataMembers[1], out var date) ? date : new DateTime();
+                    timeLog.LastName = dataMembers[2];
+                    timeLog.WorkingHours = int.TryParse(dataMembers[3], out var workingHours) ? workingHours : 0;
+
+                    timeLogs.Add(timeLog);
+                }
             }
 
             return timeLogs.ToArray();
