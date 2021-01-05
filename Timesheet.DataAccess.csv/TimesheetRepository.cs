@@ -35,16 +35,20 @@ namespace Timesheet.DataAccess.csv
             
             foreach (var dataRow in dataRows)
             {
-                var timeLog = new TimeLog();
+                if (dataRow.Contains(lastName))
+                {
+                    var timeLog = new TimeLog();
 
-                var dataMembers = dataRow.Split(_delimeter);
+                    var dataMembers = dataRow.Split(_delimeter);
 
-                timeLog.Comment = dataMembers[0];
-                timeLog.Date = DateTime.TryParse(dataMembers[1], out var date) ? date : new DateTime();
-                timeLog.LastName = dataMembers[2];
-                timeLog.WorkingHours = int.TryParse(dataMembers[3], out var workingHours) ? workingHours : 0;
+                    timeLog.Comment = dataMembers[0];
+                    timeLog.Date = DateTime.TryParse(dataMembers[1], out var date) ? date : new DateTime();
+                    timeLog.LastName = dataMembers[2];
+                    timeLog.WorkingHours = int.TryParse(dataMembers[3], out var workingHours) ? workingHours : 0;
+
+                    timeLogs.Add(timeLog);
+                }
                 
-                timeLogs.Add(timeLog);
             }
 
             return timeLogs.ToArray();
