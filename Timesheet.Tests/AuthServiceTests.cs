@@ -23,11 +23,7 @@ namespace Timesheet.Tests
             var employeeRepositoryMock = new Mock<IEmployeeRepository>();
             employeeRepositoryMock.
                 Setup(x => x.GetEmployee(It.Is<string>(y => y == lastName)))
-                .Returns(() => new StaffEmployee
-                {
-                    LastName = lastName,
-                    Salary = 70000
-                })
+                .Returns(() => new StaffEmployee(lastName, 70000))
                 .Verifiable();
 
             var service = new AuthService(employeeRepositoryMock.Object);
@@ -51,11 +47,7 @@ namespace Timesheet.Tests
             var employeeRepositoryMock = new Mock<IEmployeeRepository>();
             employeeRepositoryMock.
                 Setup(x => x.GetEmployee(It.Is<string>(y => y == lastName)))
-                .Returns(() => new StaffEmployee
-                {
-                    LastName = lastName,
-                    Salary = 70000
-                })
+                .Returns(() => new StaffEmployee(lastName, 70000))
                 .Verifiable();
 
             var service = new AuthService(employeeRepositoryMock.Object);
