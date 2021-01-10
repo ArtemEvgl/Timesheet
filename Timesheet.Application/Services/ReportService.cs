@@ -33,71 +33,7 @@ namespace Timesheet.Application.Services
             }
 
             var totalHours = timeLogs.Sum(x => x.WorkingHours);
-            decimal bill = 0;
-
-            switch (lastName)
-            {
-                // staff
-                case "Петров":
-                {
-                    var workingHoursGroupsByDay = timeLogs
-                                            .GroupBy(x => x.Date.ToShortDateString());
-
-                    foreach (var workingLogsPerDay in workingHoursGroupsByDay)
-                    {
-                        int dayHours = workingLogsPerDay.Sum(x => x.WorkingHours);
-
-                        if (dayHours > MAX_WORKING_HOURS_PER_DAY)
-                        {
-                            var overtime = dayHours - MAX_WORKING_HOURS_PER_DAY;
-
-                            bill += MAX_WORKING_HOURS_PER_DAY / MAX_WORKING_HOURS_PER_MONTH * employee.Salary;
-                            bill += overtime / MAX_WORKING_HOURS_PER_MONTH * employee.Salary * 2;
-                        }
-                        else
-                        {
-                            bill += dayHours / MAX_WORKING_HOURS_PER_MONTH * employee.Salary;
-                        }
-                    }
-
-                    break;
-                }
-
-                // manager
-                case "Иванов":
-                {
-                    var workingHoursGroupsByDay = timeLogs
-                                            .GroupBy(x => x.Date.ToShortDateString());
-
-                    foreach (var workingLogsPerDay in workingHoursGroupsByDay)
-                    {
-                        int dayHours = workingLogsPerDay.Sum(x => x.WorkingHours);
-
-                        if (dayHours > MAX_WORKING_HOURS_PER_DAY)
-                        {
-                            
-                            decimal bonusPerDay = MAX_WORKING_HOURS_PER_DAY / MAX_WORKING_HOURS_PER_MONTH * BONUS_FOR_MANAGER;
-                            bill += MAX_WORKING_HOURS_PER_DAY / MAX_WORKING_HOURS_PER_MONTH * employee.Salary + bonusPerDay;
-                        }
-                        else
-                        {
-                            bill += dayHours / MAX_WORKING_HOURS_PER_MONTH * employee.Salary;
-                        }
-                    }
-
-                    break;
-                }
-
-                // freelancer
-                case "Сидоров":
-                {                   
-                    bill = totalHours * employee.Salary;
-                    break;
-                }
-
-                default:
-                    break;
-            }
+            var bill = employee.CalculateBill(timeLogs);
 
             return new EmployeeReport
             {
@@ -109,7 +45,5 @@ namespace Timesheet.Application.Services
                 EndDate = timeLogs.Select(t => t.Date).Max()
             };
         }
-
-        
     }
 }

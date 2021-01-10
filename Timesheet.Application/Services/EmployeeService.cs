@@ -12,13 +12,13 @@ namespace Timesheet.Application.Services
             _employeeRepository = employeeRepository;
         }
 
-        public bool AddEmployee(StaffEmployee staffEmployee)
+        public bool AddEmployee(Employee employee)
         {
-            bool isValid = !string.IsNullOrEmpty(staffEmployee.LastName) && staffEmployee.Salary > 0;
+            bool isValid = !string.IsNullOrEmpty(employee.LastName) && employee.Salary > 0;
 
             if (isValid)
             {
-                _employeeRepository.AddEmployee(staffEmployee);
+                _employeeRepository.AddEmployee(employee);
             }
 
             return isValid;

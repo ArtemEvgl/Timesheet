@@ -1,9 +1,9 @@
 ﻿using Moq;
 using NUnit.Framework;
-using Timesheet.Application.Services;
-using Timesheet.Domain.Models;
-using Timesheet.Domain;
 using System;
+using Timesheet.Application.Services;
+using Timesheet.Domain;
+using Timesheet.Domain.Models;
 
 namespace Timesheet.Tests
 {
@@ -158,11 +158,7 @@ namespace Timesheet.Tests
 
             employeeRepositoryMock
                 .Setup(x => x.GetEmployee(It.Is<string>(y => y == expectedLastName)))
-                .Returns(() => new StaffEmployee
-                {
-                    LastName = expectedLastName,
-                    Salary = 70000
-                })
+                .Returns(() => new StaffEmployee(expectedLastName, 70000))
                 .Verifiable();
 
             var service = new ReportService(timesheetRepositoryMock.Object, employeeRepositoryMock.Object);

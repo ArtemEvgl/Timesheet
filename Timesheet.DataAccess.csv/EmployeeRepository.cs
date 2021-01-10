@@ -18,35 +18,49 @@ namespace Timesheet.DataAccess.csv
             _path = csvSettings.Path + "\\employees.csv";
         }
 
-        public void AddEmployee(StaffEmployee staffEmployee)
-        {
-            var dataRow = $"{staffEmployee.LastName}{_delimeter}{staffEmployee.Salary}{_delimeter}\n";
+        public void AddEmployee(Employee employee)
+        {                        
+            var dataRow = employee.GetPersonalData(_delimeter);
             File.AppendAllText(_path, dataRow);
         }
 
-        public StaffEmployee GetEmployee(string lastName)
+        public Employee GetEmployee(string lastName)
         {
             var data = File.ReadAllText(_path);
             var dataRows = data.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            StaffEmployee staffEmployee = null;
+            Employee employee = null;
 
             foreach (var dataRow in dataRows)
             {
                 if (dataRow.Contains(lastName))
                 {
                     var dataMembers = dataRow.Split(_delimeter);
-
-                    staffEmployee = new StaffEmployee
+                    decimal salary = 0;
+                    decimal.TryParse(dataMembers[1], out salary);
+                    var position = dataMembers[2];
+                    switch (position)
                     {
-                        LastName = dataMembers[0],
-                        Salary = decimal.TryParse(dataMembers[1], out decimal salary) ? salary : 0
-                    };
+                        case "Руководитель":
+                            decimal bonus = 0;
+                            decimal.TryParse(dataMembers[1], out bonus);
+                            employee = new ChiefEmployee(lastName, salary, bonus);
+                            break;
+                        case "Штатный сотрудник":
+                            employee = new StaffEmployee(lastName, salary);
+                            break;
+                        case "Фрилансер":
+                            employee = new FreelancerEmployee(lastName, salary);
+                            break;
+                        default:
+                            break; // Выбрасывать исключение?
+                    }
+
 
                     break;
                 }
             }
 
-            return staffEmployee;
+            return employee;
         }
     }
 }
