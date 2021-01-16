@@ -38,5 +38,12 @@ namespace Timesheet.Domain.Models
         {
             return $"{LastName}{delimeter}{Salary}{delimeter}Штатный сотрудник{delimeter}\n";
         }
+
+        public override bool CheckInputLog(TimeLog timeLog)
+        {
+            bool isValid = base.CheckInputLog(timeLog);
+            isValid = timeLog.LastName == this.LastName && isValid;
+            return isValid;
+        }
     }
 }
