@@ -42,7 +42,7 @@ namespace Timesheet.DataAccess.csv
                     {
                         case "Руководитель":
                             decimal bonus = 0;
-                            decimal.TryParse(dataMembers[1], out bonus);
+                            decimal.TryParse(dataMembers[3], out bonus);
                             employee = new ChiefEmployee(lastName, salary, bonus);
                             break;
                         case "Штатный сотрудник":
