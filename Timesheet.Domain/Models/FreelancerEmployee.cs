@@ -19,5 +19,12 @@ namespace Timesheet.Domain.Models
         {
             return $"{LastName}{delimeter}{Salary}{delimeter}Фрилансер{delimeter}\n";
         }
+
+        public override bool CheckInputLog(TimeLog timeLog)
+        {
+            bool isValid = base.CheckInputLog(timeLog);
+            isValid = timeLog.LastName == this.LastName && timeLog.Date > DateTime.Now.AddDays(-2) && isValid;
+            return isValid;
+        }
     }
 }
