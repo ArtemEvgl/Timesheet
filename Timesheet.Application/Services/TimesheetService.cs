@@ -22,7 +22,6 @@ namespace Timesheet.Application.Services
             //    && timeLog.WorkingHours <= 24
             //    && !string.IsNullOrWhiteSpace(timeLog.LastName);
 
-
             var employee = _employeeRepository.GetEmployee(lastName);
             
             bool isValid = employee != null ? employee.CheckInputLog(timeLog) : false;

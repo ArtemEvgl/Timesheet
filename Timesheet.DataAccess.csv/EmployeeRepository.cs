@@ -38,6 +38,7 @@ namespace Timesheet.DataAccess.csv
                     decimal salary = 0;
                     decimal.TryParse(dataMembers[1], out salary);
                     var position = dataMembers[2];
+
                     switch (position)
                     {
                         case "Руководитель":
@@ -54,7 +55,6 @@ namespace Timesheet.DataAccess.csv
                         default:
                             break; // Выбрасывать исключение?
                     }
-
 
                     break;
                 }
