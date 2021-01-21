@@ -21,7 +21,8 @@ namespace Timesheet.Api.Controllers
         [HttpPost]
         public ActionResult<bool> TrackTime(TimeLog timeLog)
         {
-            return Ok(_timeSheetService.TrackTime(timeLog, timeLog.LastName));
+            var lastName = (string)HttpContext.Items["LastName"];
+            return Ok(_timeSheetService.TrackTime(timeLog, lastName));
         }
     }
 }
