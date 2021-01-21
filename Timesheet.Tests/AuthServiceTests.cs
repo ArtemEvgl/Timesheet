@@ -118,7 +118,7 @@ namespace Timesheet.Tests
 
             var employee = new ChiefEmployee("Иванов", 0, 0);
 
-            var token = service.GenerateToken("secret secret secret secret secret", employee);
+            var token = AuthService.GenerateToken("secret secret secret secret secret", employee);
         }
     }
 }
