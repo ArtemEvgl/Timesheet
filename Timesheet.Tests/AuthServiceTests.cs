@@ -109,5 +109,15 @@ namespace Timesheet.Tests
             Assert.IsFalse(result);
             Assert.IsTrue(UserSessions.Sessions.Contains(lastName) == false);
         }
+
+        [Test]
+        public void Test()
+        {
+            var employeeRepositoryMock = new Mock<IEmployeeRepository>();
+            var service = new AuthService(employeeRepositoryMock.Object);
+
+            var employee = new ChiefEmployee("TestLastName", 0, 0);
+            var token = service.GenerateJWT("security security security security security", employee);
+        }
     }
 }
