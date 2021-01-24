@@ -1,9 +1,9 @@
 ﻿using System;
 using Timesheet.Domain;
 using Timesheet.Domain.Models;
-using static Timesheet.Application.Services.AuthService;
+using static Timesheet.BussinessLogic.Services.AuthService;
 
-namespace Timesheet.Application.Services
+namespace Timesheet.BussinessLogic.Services
 {
     public class TimesheetService : ITimeSheetService
     {

@@ -6,9 +6,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Timesheet.Api.Models;
-using Timesheet.Application.Services;
+using Timesheet.BussinessLogic.Services;
 using Timesheet.DataAccess.csv;
 using Timesheet.Domain;
+using Timesheet.Integrations.GitHub;
 
 namespace Timesheet.Api
 {
@@ -32,6 +33,9 @@ namespace Timesheet.Api
             services.AddTransient<IEmployeeRepository, EmployeeRepository>();
             services.AddTransient<IEmployeeService, EmployeeService>();
             services.AddTransient<IReportService, ReportService>();
+            services.AddTransient<IIssuesService, IssuesService>();
+
+            services.AddTransient<IIssuesClient>(x => new IssuesClient("token"));
 
             services.AddSingleton(x => new CsvSettings(';', "..\\Timesheet.DataAccess.csv\\Data"));
 

@@ -13,8 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Timesheet.Application\Timesheet.Application.csproj" />
+    <ProjectReference Include="..\Timesheet.Application\Timesheet.BussinessLogic.csproj" />
     <ProjectReference Include="..\Timesheet.DataAccess.csv\Timesheet.DataAccess.csv.csproj" />
+    <ProjectReference Include="..\Timesheet.Integrations.GitHub\Timesheet.Integrations.GitHub.csproj" />
   </ItemGroup>
 
 
