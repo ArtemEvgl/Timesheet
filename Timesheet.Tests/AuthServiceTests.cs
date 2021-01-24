@@ -34,10 +34,10 @@ namespace Timesheet.Tests
             //assert
             employeeRepositoryMock.VerifyAll();
 
+            Assert.False(string.IsNullOrWhiteSpace(result));
             Assert.IsNotNull(UserSessions.Sessions);
             Assert.IsNotEmpty(UserSessions.Sessions);
             Assert.IsTrue(UserSessions.Sessions.Contains(lastName));
-            Assert.IsTrue(result);
         }
 
         public void Login_InvokeLoginTwiceForOneLastName_ShouldReturnTrue()
@@ -60,10 +60,10 @@ namespace Timesheet.Tests
             //assert
             employeeRepositoryMock.VerifyAll();
 
+            Assert.False(string.IsNullOrWhiteSpace(result));
             Assert.IsNotNull(UserSessions.Sessions);
             Assert.IsNotEmpty(UserSessions.Sessions);
             Assert.IsTrue(UserSessions.Sessions.Contains(lastName));
-            Assert.IsTrue(result);
         }
 
         [TestCase(null)]
@@ -81,7 +81,7 @@ namespace Timesheet.Tests
             //assert
             employeeRepositoryMock.Verify(x => x.GetEmployee(lastName), Times.Never);
 
-            Assert.IsFalse(result);
+            Assert.False(string.IsNullOrWhiteSpace(result));
             Assert.IsEmpty(UserSessions.Sessions);
             Assert.IsTrue(UserSessions.Sessions.Contains(lastName) == false);
         }
@@ -106,7 +106,7 @@ namespace Timesheet.Tests
 
             employeeRepositoryMock.Verify(x => x.GetEmployee(lastName), Times.Once);
 
-            Assert.IsFalse(result);
+            Assert.False(string.IsNullOrWhiteSpace(result));
             Assert.IsTrue(UserSessions.Sessions.Contains(lastName) == false);
         }
 

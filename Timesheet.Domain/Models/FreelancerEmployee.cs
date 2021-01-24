@@ -8,10 +8,11 @@ namespace Timesheet.Domain.Models
         public FreelancerEmployee(string lastName, decimal salary) : base(lastName, salary, "Freelancer")
         {
         }
+
         public override decimal CalculateBill(TimeLog[] timeLogs)
         {
             var totalHours = timeLogs.Sum(x => x.WorkingHours);
-            decimal bill = totalHours * Salary;
+            var bill = totalHours * Salary;
             return bill;
         }
 
@@ -22,7 +23,7 @@ namespace Timesheet.Domain.Models
 
         public override bool CheckInputLog(TimeLog timeLog)
         {
-            bool isValid = base.CheckInputLog(timeLog);
+            var isValid = base.CheckInputLog(timeLog);
             isValid = timeLog.LastName == this.LastName && timeLog.Date > DateTime.Now.AddDays(-2) && isValid;
             return isValid;
         }
