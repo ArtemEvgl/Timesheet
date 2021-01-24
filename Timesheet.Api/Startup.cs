@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -30,7 +32,7 @@ namespace Timesheet.Api
 
             services.AddSingleton(x => new CsvSettings(';', "..\\Timesheet.DataAccess.csv\\Data"));
 
-            services.AddControllers();
+            services.AddControllers().AddFluentValidation();
             services.AddControllers().AddNewtonsoftJson();
         }
 
