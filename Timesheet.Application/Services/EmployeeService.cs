@@ -1,7 +1,7 @@
 ﻿using Timesheet.Domain;
 using Timesheet.Domain.Models;
 
-namespace Timesheet.Application.Services
+namespace Timesheet.BussinessLogic.Services
 {
   
     public class EmployeeService : IEmployeeService

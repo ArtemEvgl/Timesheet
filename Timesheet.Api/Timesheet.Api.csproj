@@ -8,13 +8,20 @@
     <PackageReference Include="FluentValidation" Version="9.4.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="9.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.11">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Timesheet.Application\Timesheet.Application.csproj" />
+    <ProjectReference Include="..\Timesheet.Application\Timesheet.BussinessLogic.csproj" />
     <ProjectReference Include="..\Timesheet.DataAccess.csv\Timesheet.DataAccess.csv.csproj" />
+    <ProjectReference Include="..\Timesheet.DataAccess.MSSQL\Timesheet.DataAccess.MSSQL.csproj" />
+    <ProjectReference Include="..\Timesheet.Integrations.GitHub\Timesheet.Integrations.GitHub.csproj" />
   </ItemGroup>
 
 
