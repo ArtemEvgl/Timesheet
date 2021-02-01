@@ -1,5 +1,4 @@
-﻿using System;
-using Timesheet.Domain;
+﻿using Timesheet.Domain;
 using Timesheet.Domain.Models;
 using static Timesheet.Application.Services.AuthService;
 
@@ -8,43 +7,23 @@ namespace Timesheet.Application.Services
     public class TimesheetService : ITimeSheetService
     {
         private readonly ITimesheetRepository _timesheetRepository;
-        private readonly IEmployeeRepository _employeeRepository;
 
-        public TimesheetService(ITimesheetRepository timesheetRepository, IEmployeeRepository employeeRepository)
+        public TimesheetService(ITimesheetRepository timesheetRepository)
         {
             _timesheetRepository = timesheetRepository;
-            _employeeRepository = employeeRepository;
         }
 
-        public bool TrackTime(TimeLog timeLog, string lastName)
+        public bool TrackTime(TimeLog timeLog)
         {
-            bool isValid = timeLog.WorkingHours > 0
-                && timeLog.WorkingHours <= 24
-                && !string.IsNullOrWhiteSpace(timeLog.LastName);
+            bool isValid = timeLog.WorkingHours > 0 && timeLog.WorkingHours <= 24 && !string.IsNullOrWhiteSpace(timeLog.LastName);
 
-            var employee = _employeeRepository.GetEmployee(lastName);
+            isValid = UserSessions.Sessions.Contains(timeLog.LastName) && isValid;
 
-            if (!isValid || employee == null)
+            if (!isValid)
             {
                 return false;
             }
 
-            if (employee is FreelancerEmployee)
-            {
-                if (DateTime.Now.AddDays(-2) > timeLog.Date)
-                {
-                    return false;
-                }
-            }
-
-            if (employee is FreelancerEmployee || employee is StaffEmployee)
-            {
-                if (lastName != timeLog.LastName)
-                {
-                    return false;
-                }
-            }
-            
             _timesheetRepository.Add(timeLog);
 
             return true;

@@ -4,6 +4,6 @@ namespace Timesheet.Domain
 {
     public interface ITimeSheetService
     {
-        bool TrackTime(TimeLog timeLog, string lastName);
+        bool TrackTime(TimeLog timeLog);
     }
 }
