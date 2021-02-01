@@ -10,8 +10,27 @@ namespace Timesheet.Tests
 {
     class TimesheetServiceTests
     {
+
+        private readonly TimesheetService _service;
+        private readonly Mock<ITimesheetRepository> _timesheetRepositoryMock;
+        private readonly Mock<IEmployeeRepository> _employeeRepositoryMock;
+
+        public TimesheetServiceTests()
+        {
+            _timesheetRepositoryMock = new Mock<ITimesheetRepository>();
+            _employeeRepositoryMock = new Mock<IEmployeeRepository>();
+
+            _service = new TimesheetService(_timesheetRepositoryMock.Object, _employeeRepositoryMock.Object);
+        }
+
+        [SetUp]
+        public void SetUp()
+        {
+            UserSessions.Sessions.Clear();
+        }
+
         [Test]
-        public void TrackTime_ShouldReturnTrue()
+        public void TrackTime_StaffEmployee_ShouldReturnTrue()
         {
             //arrange
             var expectedLastName = "TestUser";
@@ -20,25 +39,113 @@ namespace Timesheet.Tests
 
             var timeLog = new TimeLog
             {
-                Date = new DateTime(),
+                Date = DateTime.Now,
                 WorkingHours = 1,
                 LastName = expectedLastName,
                 Comment = Guid.NewGuid().ToString()
             };
 
-            var timesheetRepositoryMock = new Mock<ITimesheetRepository>();
-
-            timesheetRepositoryMock
-                .Setup(x => x.Add(timeLog))
+            _employeeRepositoryMock
+                .Setup(x => x.GetEmployee(expectedLastName))
+                .Returns(() => new StaffEmployee(expectedLastName, 0m))
                 .Verifiable();
 
-            var service = new TimesheetService(timesheetRepositoryMock.Object);
-
             //act
-            var result = service.TrackTime(timeLog);
+            var result = _service.TrackTime(timeLog, timeLog.LastName);
 
             //assert
-            timesheetRepositoryMock.Verify(x => x.Add(timeLog), Times.Once);
+            _employeeRepositoryMock.VerifyAll();
+            _timesheetRepositoryMock.Verify(x => x.Add(timeLog), Times.Once);
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void TrackTime_ChiefEmployee_ShouldReturnTrue()
+        {
+            //arrange
+            var expectedLastName = "TestUser";
+
+            UserSessions.Sessions.Add(expectedLastName);
+
+            var timeLog = new TimeLog
+            {
+                Date = DateTime.Now,
+                WorkingHours = 1,
+                LastName = expectedLastName,
+                Comment = Guid.NewGuid().ToString()
+            };
+
+            _employeeRepositoryMock
+                .Setup(x => x.GetEmployee(expectedLastName))
+                .Returns(() => new ChiefEmployee(expectedLastName, 0m, 0m))
+                .Verifiable();
+
+            //act
+            var result = _service.TrackTime(timeLog, timeLog.LastName);
+
+            //assert
+            _employeeRepositoryMock.VerifyAll();
+            _timesheetRepositoryMock.Verify(x => x.Add(timeLog), Times.Once);
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void TrackTime_StaffEmployeeTriesAddWrongLastName_ShouldReturnFalse()
+        {
+            //arrange
+            var expectedLastName = "TestUser";
+
+            UserSessions.Sessions.Add(expectedLastName);
+
+            var timeLog = new TimeLog
+            {
+                Date = DateTime.Now,
+                WorkingHours = 1,
+                LastName = Guid.NewGuid().ToString(),
+                Comment = Guid.NewGuid().ToString()
+            };
+
+            _employeeRepositoryMock
+                .Setup(x => x.GetEmployee(expectedLastName))
+                .Returns(() => new StaffEmployee(expectedLastName, 0m))
+                .Verifiable();
+
+            //act
+            var result = _service.TrackTime(timeLog, expectedLastName);
+
+            //assert
+            _employeeRepositoryMock.VerifyAll();
+            _timesheetRepositoryMock.Verify(x => x.Add(timeLog), Times.Never);
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void TrackTime_StaffEmployeeTrackPreviousTime_ShouldReturnTrue()
+        {
+            //arrange
+            var expectedLastName = "TestUser";
+
+            UserSessions.Sessions.Add(expectedLastName);
+
+            var timeLog = new TimeLog
+            {
+                Date = DateTime.Now.AddDays(-10),
+                WorkingHours = 1,
+                LastName = expectedLastName,
+                Comment = Guid.NewGuid().ToString()
+            };
+
+            _employeeRepositoryMock
+                .Setup(x => x.GetEmployee(expectedLastName))
+                .Returns(() => new StaffEmployee(expectedLastName, 0m))
+                .Verifiable();
+
+            //act
+            var result = _service.TrackTime(timeLog, timeLog.LastName);
+
+            //assert
+            _employeeRepositoryMock.VerifyAll();
+            _timesheetRepositoryMock.Verify(x => x.Add(timeLog), Times.Once);
             Assert.IsTrue(result);
         }
 
@@ -56,7 +163,6 @@ namespace Timesheet.Tests
         public void TrackTime_ShouldReturnFalse(int hours, string lastName)
         {
             //arrange
-
             var timeLog = new TimeLog
             {
                 Date = new DateTime(),
@@ -65,20 +171,83 @@ namespace Timesheet.Tests
                 Comment = Guid.NewGuid().ToString()
             };
 
-            var timesheetRepositoryMock = new Mock<ITimesheetRepository>();
-
-            timesheetRepositoryMock
-                .Setup(x => x.Add(timeLog))
+            _employeeRepositoryMock
+                .Setup(x => x.GetEmployee(lastName))
+                .Returns(() => null)
                 .Verifiable();
 
-            var service = new TimesheetService(timesheetRepositoryMock.Object);
-
             //act
-            var result = service.TrackTime(timeLog);
+            var result = _service.TrackTime(timeLog, timeLog.LastName);
 
             //assert
-            timesheetRepositoryMock.Verify(x => x.Add(timeLog), Times.Never);
+            _employeeRepositoryMock.VerifyAll();
+            _timesheetRepositoryMock.Verify(x => x.Add(timeLog), Times.Never);
             Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void TrackTime_Freelancer_ShouldReturnTrue()
+        {
+            //arrange
+            var expectedLastName = "TestUser";
+
+            UserSessions.Sessions.Add(expectedLastName);
+
+            var timeLog = new TimeLog
+            {
+                Date = DateTime.Now,
+                WorkingHours = 2,
+                LastName = expectedLastName,
+                Comment = Guid.NewGuid().ToString()
+            };
+
+            _employeeRepositoryMock
+                .Setup(x => x.GetEmployee(expectedLastName))
+                .Returns(() => new FreelancerEmployee(expectedLastName, 0m))
+                .Verifiable();
+
+            //act
+            var result = _service.TrackTime(timeLog, expectedLastName);
+
+            //assert
+            var lowerBoundDate = DateTime.Now.AddDays(-2);
+
+            _employeeRepositoryMock.VerifyAll();
+            _timesheetRepositoryMock.Verify(x => x.Add(timeLog), Times.Once);
+
+            Assert.IsTrue(timeLog.Date > lowerBoundDate);
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void TrackTime_Freelancer_ShouldReturnFalse()
+        {
+            //arrange
+            var expectedLastName = "TestUser";
+
+            UserSessions.Sessions.Add(expectedLastName);
+
+            var timeLog = new TimeLog
+            {
+                Date = DateTime.Now.AddDays(-3),
+                WorkingHours = 2,
+                LastName = expectedLastName,
+                Comment = Guid.NewGuid().ToString()
+            };
+
+            _employeeRepositoryMock
+                .Setup(x => x.GetEmployee(expectedLastName))
+                .Returns(() => new FreelancerEmployee(expectedLastName, 0m))
+                .Verifiable();
+
+            //act
+            var result = _service.TrackTime(timeLog, expectedLastName);
+
+            //assert
+            Assert.IsFalse(result);
+
+            _employeeRepositoryMock.VerifyAll();
+            _timesheetRepositoryMock.Verify(x => x.Add(timeLog), Times.Never);
         }
     }
 }
