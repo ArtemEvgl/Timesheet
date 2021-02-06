@@ -50,7 +50,7 @@ namespace Timesheet.Tests
                 .Verifiable();
 
             employeeRepositoryMock
-                .Setup(x => x.GetEmployee(It.Is<string>(y => y == expectedLastName)))
+                .Setup(x => x.Get(It.Is<string>(y => y == expectedLastName)))
                 .Returns(() => new StaffEmployee(expectedLastName, salary))
                 .Verifiable();
 
@@ -114,7 +114,7 @@ namespace Timesheet.Tests
                 .Verifiable();
 
             employeeRepositoryMock
-                .Setup(x => x.GetEmployee(It.Is<string>(y => y == expectedLastName)))
+                .Setup(x => x.Get(It.Is<string>(y => y == expectedLastName)))
                 .Returns(() => new ChiefEmployee(expectedLastName, salary, bonus))
                 .Verifiable();
 
@@ -177,7 +177,7 @@ namespace Timesheet.Tests
                 .Verifiable();
 
             employeeRepositoryMock
-                .Setup(x => x.GetEmployee(It.Is<string>(y => y == expectedLastName)))
+                .Setup(x => x.Get(It.Is<string>(y => y == expectedLastName)))
                 .Returns(() => new FreelancerEmployee(expectedLastName, salary))
                 .Verifiable();
 
@@ -217,7 +217,7 @@ namespace Timesheet.Tests
             var expectedTotalHours = 281m;
 
             employeeRepositoryMock
-                .Setup(x => x.GetEmployee(It.Is<string>(x => x == expectedLastName)))
+                .Setup(x => x.Get(It.Is<string>(x => x == expectedLastName)))
                 .Returns(() => new StaffEmployee(expectedLastName, salary))
                 .Verifiable();
 
@@ -281,7 +281,7 @@ namespace Timesheet.Tests
             var expectedTotalHours = 281m;
 
             employeeRepositoryMock
-                .Setup(x => x.GetEmployee(It.Is<string>(x => x == expectedLastName)))
+                .Setup(x => x.Get(It.Is<string>(x => x == expectedLastName)))
                 .Returns(() => new ChiefEmployee(expectedLastName, salary, bonus))
                 .Verifiable();
 
@@ -344,7 +344,7 @@ namespace Timesheet.Tests
             var expectedTotalHours = 281m;
 
             employeeRepositoryMock
-                .Setup(x => x.GetEmployee(It.Is<string>(x => x == expectedLastName)))
+                .Setup(x => x.Get(It.Is<string>(x => x == expectedLastName)))
                 .Returns(() => new FreelancerEmployee(expectedLastName, salary))
                 .Verifiable();
 
@@ -409,7 +409,7 @@ namespace Timesheet.Tests
                 .Verifiable();
 
             employeeRepositoryMock
-                .Setup(x => x.GetEmployee(It.Is<string>(y => y == expectedLastName)))
+                .Setup(x => x.Get(It.Is<string>(y => y == expectedLastName)))
                 .Returns(() => new StaffEmployee(expectedLastName, salary))
                 .Verifiable();
 
@@ -450,7 +450,7 @@ namespace Timesheet.Tests
                 .Verifiable();
 
             employeeRepositoryMock
-                .Setup(x => x.GetEmployee(It.Is<string>(y => y == expectedLastName)))
+                .Setup(x => x.Get(It.Is<string>(y => y == expectedLastName)))
                 .Returns(() => new ChiefEmployee(expectedLastName, salary, bonus))
                 .Verifiable();
 
@@ -489,7 +489,7 @@ namespace Timesheet.Tests
                 .Verifiable();
 
             employeeRepositoryMock
-                .Setup(x => x.GetEmployee(It.Is<string>(y => y == expectedLastName)))
+                .Setup(x => x.Get(It.Is<string>(y => y == expectedLastName)))
                 .Returns(() => new FreelancerEmployee(expectedLastName, 70000))
                 .Verifiable();
 
@@ -540,7 +540,7 @@ namespace Timesheet.Tests
                 .Verifiable();
 
             employeeRepositoryMock
-                .Setup(x => x.GetEmployee(It.Is<string>(y => y == expectedLastName)))
+                .Setup(x => x.Get(It.Is<string>(y => y == expectedLastName)))
                 .Returns(() => new StaffEmployee(expectedLastName, salary))
                 .Verifiable();
 
@@ -592,7 +592,7 @@ namespace Timesheet.Tests
                 .Verifiable();
 
             employeeRepositoryMock
-                .Setup(x => x.GetEmployee(It.Is<string>(y => y == expectedLastName)))
+                .Setup(x => x.Get(It.Is<string>(y => y == expectedLastName)))
                 .Returns(() => new ChiefEmployee(expectedLastName, salary, bonus))
                 .Verifiable();
 
@@ -643,7 +643,7 @@ namespace Timesheet.Tests
                 .Verifiable();
 
             employeeRepositoryMock
-                .Setup(x => x.GetEmployee(It.Is<string>(y => y == expectedLastName)))
+                .Setup(x => x.Get(It.Is<string>(y => y == expectedLastName)))
                 .Returns(() => new FreelancerEmployee(expectedLastName, salary))
                 .Verifiable();
 
@@ -692,7 +692,7 @@ namespace Timesheet.Tests
                 .Verifiable();
 
             employeeRepositoryMock
-                .Setup(x => x.GetEmployee(It.Is<string>(y => y == expectedLastName)))
+                .Setup(x => x.Get(It.Is<string>(y => y == expectedLastName)))
                 .Returns(() => new StaffEmployee(expectedLastName, salary))
                 .Verifiable();
 
@@ -741,7 +741,7 @@ namespace Timesheet.Tests
                 .Verifiable();
 
             employeeRepositoryMock
-                .Setup(x => x.GetEmployee(It.Is<string>(y => y == expectedLastName)))
+                .Setup(x => x.Get(It.Is<string>(y => y == expectedLastName)))
                 .Returns(() => new FreelancerEmployee(expectedLastName, salary))
                 .Verifiable();
 
@@ -791,7 +791,7 @@ namespace Timesheet.Tests
                 .Verifiable();
 
             employeeRepositoryMock
-                .Setup(x => x.GetEmployee(It.Is<string>(y => y == expectedLastName)))
+                .Setup(x => x.Get(It.Is<string>(y => y == expectedLastName)))
                 .Returns(() => new ChiefEmployee(expectedLastName, salary, bonus))
                 .Verifiable();
 

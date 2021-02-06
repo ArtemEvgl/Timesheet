@@ -46,7 +46,7 @@ namespace Timesheet.Tests
             };
 
             _employeeRepositoryMock
-                .Setup(x => x.GetEmployee(expectedLastName))
+                .Setup(x => x.Get(expectedLastName))
                 .Returns(() => new StaffEmployee(expectedLastName, 0m))
                 .Verifiable();
 
@@ -76,7 +76,7 @@ namespace Timesheet.Tests
             };
 
             _employeeRepositoryMock
-                .Setup(x => x.GetEmployee(expectedLastName))
+                .Setup(x => x.Get(expectedLastName))
                 .Returns(() => new ChiefEmployee(expectedLastName, 0m, 0m))
                 .Verifiable();
 
@@ -106,7 +106,7 @@ namespace Timesheet.Tests
             };
 
             _employeeRepositoryMock
-                .Setup(x => x.GetEmployee(expectedLastName))
+                .Setup(x => x.Get(expectedLastName))
                 .Returns(() => new StaffEmployee(expectedLastName, 0m))
                 .Verifiable();
 
@@ -136,7 +136,7 @@ namespace Timesheet.Tests
             };
 
             _employeeRepositoryMock
-                .Setup(x => x.GetEmployee(expectedLastName))
+                .Setup(x => x.Get(expectedLastName))
                 .Returns(() => new StaffEmployee(expectedLastName, 0m))
                 .Verifiable();
 
@@ -172,7 +172,7 @@ namespace Timesheet.Tests
             };
 
             _employeeRepositoryMock
-                .Setup(x => x.GetEmployee(lastName))
+                .Setup(x => x.Get(lastName))
                 .Returns(() => null)
                 .Verifiable();
 
@@ -202,7 +202,7 @@ namespace Timesheet.Tests
             };
 
             _employeeRepositoryMock
-                .Setup(x => x.GetEmployee(expectedLastName))
+                .Setup(x => x.Get(expectedLastName))
                 .Returns(() => new FreelancerEmployee(expectedLastName, 0m))
                 .Verifiable();
 
@@ -236,7 +236,7 @@ namespace Timesheet.Tests
             };
 
             _employeeRepositoryMock
-                .Setup(x => x.GetEmployee(expectedLastName))
+                .Setup(x => x.Get(expectedLastName))
                 .Returns(() => new FreelancerEmployee(expectedLastName, 0m))
                 .Verifiable();
 
