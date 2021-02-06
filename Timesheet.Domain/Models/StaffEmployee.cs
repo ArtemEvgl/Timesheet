@@ -43,7 +43,7 @@ namespace Timesheet.Domain.Models
         public override bool CheckInputLog(TimeLog timeLog)
         {
             bool isValid = base.CheckInputLog(timeLog);
-            isValid = timeLog.Name == this.LastName && isValid;
+            isValid = timeLog.LastName == this.LastName && isValid;
             return isValid;
         }
     }

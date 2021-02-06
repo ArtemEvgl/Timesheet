@@ -9,7 +9,7 @@ namespace Timesheet.Api
         public ApiMappingProfile()
         {
             CreateMap<CreateTimeLogRequest, TimeLog>()
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(x => x.LastName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(x => x.LastName))
                 .ForMember(dest => dest.Comment, opt => opt.Ignore());
         }
     }
