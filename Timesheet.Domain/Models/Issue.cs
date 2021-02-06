@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Timesheet.Domain.Models
+﻿namespace Timesheet.Domain.Models
 {
     public class Issue
     {
