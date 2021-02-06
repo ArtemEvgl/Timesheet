@@ -18,7 +18,7 @@ namespace Timesheet.Api.Controllers
         [HttpGet]
         public ActionResult<Issue[]> Get()
         {
-            return Ok(_issuesService.Get());
+            return Ok(_issuesService.Get("pingvin1308", "Timesheets"));
         }
     }
 }
