@@ -8,9 +8,10 @@ namespace Timesheet.Api
     {
         public ApiMappingProfile()
         {
-            CreateMap<CreateTimeLogRequest, TimeLog>()
-                .ForMember(dest => dest.LastName, opt => opt.MapFrom(x => x.LastName))
-                .ForMember(dest => dest.Comment, opt => opt.Ignore());
+            CreateMap<CreateTimeLogRequest, TimeLog>();
+            CreateMap<EmployeeReport, GetEmployeeReportResponse>();
+            CreateMap<TimeLog, TimeLogDto>();
+            CreateMap<Issue, IssueDto>();
         }
     }
 }

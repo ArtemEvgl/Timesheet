@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Timesheet.Api.ResourceModels;
+using Timesheet.Api.Models;
 using Timesheet.BussinessLogic.Exceptions;
 using Timesheet.Domain;
 

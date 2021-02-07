@@ -1,6 +1,4 @@
-﻿
-
-namespace Timesheet.Api.ResourceModels
+﻿namespace Timesheet.Api.Models
 {
     public class LoginRequest
     {
