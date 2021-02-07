@@ -22,6 +22,9 @@ namespace Timesheet.Api.Controllers
         [HttpPost]
         public ActionResult<string> Login(LoginRequest request)
         {
+            if (ModelState.IsValid == false)
+                return BadRequest();
+
             try
             {
                 var secret = _jwtConfig.Value.Secret;
