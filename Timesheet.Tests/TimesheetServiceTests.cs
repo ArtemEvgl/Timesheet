@@ -10,12 +10,12 @@ namespace Timesheet.Tests
 {
     class TimesheetServiceTests
     {
+        private TimesheetService _service;
+        private Mock<ITimesheetRepository> _timesheetRepositoryMock;
+        private Mock<IEmployeeRepository> _employeeRepositoryMock;
 
-        private readonly TimesheetService _service;
-        private readonly Mock<ITimesheetRepository> _timesheetRepositoryMock;
-        private readonly Mock<IEmployeeRepository> _employeeRepositoryMock;
-
-        public TimesheetServiceTests()
+        [SetUp]
+        public void SetUp()
         {
             _timesheetRepositoryMock = new Mock<ITimesheetRepository>();
             _employeeRepositoryMock = new Mock<IEmployeeRepository>();
@@ -23,19 +23,11 @@ namespace Timesheet.Tests
             _service = new TimesheetService(_timesheetRepositoryMock.Object, _employeeRepositoryMock.Object);
         }
 
-        [SetUp]
-        public void SetUp()
-        {
-            UserSessions.Sessions.Clear();
-        }
-
         [Test]
         public void TrackTime_StaffEmployee_ShouldReturnTrue()
         {
             //arrange
             var expectedLastName = "TestUser";
-
-            UserSessions.Sessions.Add(expectedLastName);
 
             var timeLog = new TimeLog
             {
@@ -65,8 +57,6 @@ namespace Timesheet.Tests
             //arrange
             var expectedLastName = "TestUser";
 
-            UserSessions.Sessions.Add(expectedLastName);
-
             var timeLog = new TimeLog
             {
                 Date = DateTime.Now,
@@ -95,8 +85,6 @@ namespace Timesheet.Tests
             //arrange
             var expectedLastName = "TestUser";
 
-            UserSessions.Sessions.Add(expectedLastName);
-
             var timeLog = new TimeLog
             {
                 Date = DateTime.Now,
@@ -124,8 +112,6 @@ namespace Timesheet.Tests
         {
             //arrange
             var expectedLastName = "TestUser";
-
-            UserSessions.Sessions.Add(expectedLastName);
 
             var timeLog = new TimeLog
             {
@@ -191,8 +177,6 @@ namespace Timesheet.Tests
             //arrange
             var expectedLastName = "TestUser";
 
-            UserSessions.Sessions.Add(expectedLastName);
-
             var timeLog = new TimeLog
             {
                 Date = DateTime.Now,
@@ -224,8 +208,6 @@ namespace Timesheet.Tests
         {
             //arrange
             var expectedLastName = "TestUser";
-
-            UserSessions.Sessions.Add(expectedLastName);
 
             var timeLog = new TimeLog
             {

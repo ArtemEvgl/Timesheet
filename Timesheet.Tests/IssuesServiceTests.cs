@@ -1,7 +1,6 @@
 ﻿using Moq;
 using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using Timesheet.BussinessLogic.Services;
 using Timesheet.Domain;
 using Timesheet.Domain.Models;
@@ -15,16 +14,17 @@ namespace Timesheet.Tests
         {
             // arrange
             var lastName = Guid.NewGuid().ToString();
-            var expectedLogin = Guid.NewGuid().ToString();
+            var managerLogin = Guid.NewGuid().ToString();
+            var project = Guid.NewGuid().ToString();
 
             var employeeRepository = new Mock<IEmployeeRepository>();
 
             var expectedEmployee = new StaffEmployee(lastName, 20000);
 
-            employeeRepository
-                .Setup(x => x.Get(lastName))
-                .Returns(expectedEmployee)
-                .Verifiable();
+            //employeeRepository
+            //    .Setup(x => x.Get(lastName))
+            //    .Returns(expectedEmployee)
+            //    .Verifiable();
 
             var issuesClientMock = new Mock<IIssuesClient>();
             var expectedIssue = new Issue
@@ -35,18 +35,18 @@ namespace Timesheet.Tests
             };
 
             issuesClientMock
-                .Setup(x => x.Get(expectedLogin))
+                .Setup(x => x.Get(managerLogin, project))
                 .ReturnsAsync(new[] { expectedIssue })
                 .Verifiable();
 
             var service = new IssuesService(employeeRepository.Object, issuesClientMock.Object);
 
             // act
-            var issues = service.Get();
+            var issues = service.Get(managerLogin, project);
 
             // assert
             issuesClientMock.VerifyAll();
-            employeeRepository.VerifyAll();
+            //employeeRepository.VerifyAll();
             Assert.IsNotNull(issues);
             Assert.IsNotEmpty(issues);
         }
