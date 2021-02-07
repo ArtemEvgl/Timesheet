@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Timesheet.Api.ResourceModels;
+using Microsoft.Extensions.Options;
+using Timesheet.Api.Models;
 using Timesheet.BussinessLogic.Exceptions;
 using Timesheet.Domain;
 
@@ -10,18 +11,24 @@ namespace Timesheet.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IOptions<JwtConfig> _jwtConfig;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, IOptions<JwtConfig> jwtConfig)
         {
             _authService = authService;
+            _jwtConfig = jwtConfig;
         }
 
         [HttpPost]
         public ActionResult<string> Login(LoginRequest request)
         {
+            if (ModelState.IsValid == false)
+                return BadRequest();
+
             try
             {
-                var token = _authService.Login(request.LastName);
+                var secret = _jwtConfig.Value.Secret;
+                var token = _authService.Login(request.LastName, secret);
 
                 return Ok(token);
             }

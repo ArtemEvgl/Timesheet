@@ -1,6 +1,6 @@
-﻿namespace Timesheet.Domain.Models
+﻿namespace Timesheet.Api.Models
 {
-    public class Issue
+    public class IssueDto
     {
         public int Id { get; set; }
         public int SourceId { get; set; }
