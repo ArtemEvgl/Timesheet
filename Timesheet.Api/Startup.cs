@@ -9,8 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Timesheet.Api.Models;
 using Timesheet.BussinessLogic.Services;
-using Timesheet.DataAccess.csv;
+//using Timesheet.DataAccess.csv;
 using Timesheet.DataAccess.MSSQL;
+using Timesheet.DataAccess.MSSQL.Repositories;
 using Timesheet.Domain;
 using Timesheet.Integrations.GitHub;
 
@@ -33,17 +34,18 @@ namespace Timesheet.Api
             services.AddTransient<IValidator<CreateTimeLogRequest>, TimeLogFluentValidator>();
             services.AddTransient<IValidator<LoginRequest>, LoginRequestFluentValidator>();
 
-            services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<ITimesheetRepository, TimesheetRepository>();
+            services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+
+            services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<ITimeSheetService, TimesheetService>();
-            services.AddTransient<IEmployeeRepository, DataAccess.MSSQL.Repositories.EmployeeRepository>();
             services.AddTransient<IEmployeeService, EmployeeService>();
             services.AddTransient<IReportService, ReportService>();
             services.AddTransient<IIssuesService, IssuesService>();
 
             services.AddTransient<IIssuesClient>(x => new IssuesClient("token"));
 
-            services.AddSingleton(x => new CsvSettings(';', "..\\Timesheet.DataAccess.csv\\Data"));
+            //services.AddSingleton(x => new CsvSettings(';', "..\\Timesheet.DataAccess.csv\\Data"));
 
             services.AddOptions<JwtConfig>()
                 .Bind(Configuration.GetSection("JwtConfig"));
