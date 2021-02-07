@@ -44,6 +44,9 @@ namespace Timesheet.Api
 
             services.AddSingleton(x => new CsvSettings(';', "..\\Timesheet.DataAccess.csv\\Data"));
 
+            services.AddOptions<JwtConfig>()
+                .Bind(Configuration.GetSection("JwtConfig"));
+
             services.AddDbContext<TimesheetContext>(x => 
                 x.UseSqlServer(Configuration.GetConnectionString("TimesheetContext")));
 
