@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Timesheet.Api.Models;
 using Timesheet.BussinessLogic.Exceptions;
@@ -6,6 +7,10 @@ using Timesheet.Domain;
 
 namespace Timesheet.Api.Controllers
 {
+    /// <summary>
+    /// Controller to work with auth service
+    /// </summary>
+    /// <remarks>Test controllers text</remarks>
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
@@ -19,7 +24,16 @@ namespace Timesheet.Api.Controllers
             _jwtConfig = jwtConfig;
         }
 
+        /// <summary>
+        /// Login in timesheet api
+        /// </summary>
+        /// <remarks>Test methods text</remarks>
+        /// <param name="request">login request</param>
+        /// <returns>jwt token</returns>
         [HttpPost]
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public ActionResult<string> Login(LoginRequest request)
         {
             if (ModelState.IsValid == false)

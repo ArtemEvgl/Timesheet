@@ -339,3 +339,6 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 Timesheet.DataAccess.csv/Data/
+Scripts/
+swagger.json
+Timesheet.API.xml
