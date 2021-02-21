@@ -3,10 +3,12 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System.IO;
 using Timesheet.Api.Models;
@@ -31,6 +33,7 @@ namespace Timesheet.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddAutoMapper(typeof(ApiMappingProfile), typeof(DataAccessMappingProfile));
 
             services.AddTransient<IValidator<CreateTimeLogRequest>, TimeLogFluentValidator>();
@@ -68,6 +71,11 @@ namespace Timesheet.Api
 
             services.AddControllers().AddFluentValidation();
             services.AddControllers().AddNewtonsoftJson();
+
+            var serviceProvider = services.BuildServiceProvider();
+            var logger = serviceProvider.GetService<ILogger<ControllerBase>>();
+            services.AddSingleton(typeof(ILogger), logger);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

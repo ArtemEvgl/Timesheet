@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Timesheet.Api.Models;
 using Timesheet.BussinessLogic.Exceptions;
@@ -17,11 +18,15 @@ namespace Timesheet.Api.Controllers
     {
         private readonly IAuthService _authService;
         private readonly IOptions<JwtConfig> _jwtConfig;
+        private readonly ILogger<AuthController> _logger;
 
-        public AuthController(IAuthService authService, IOptions<JwtConfig> jwtConfig)
+        public AuthController(IAuthService authService, 
+            IOptions<JwtConfig> jwtConfig,
+            ILogger<AuthController> logger)
         {
             _authService = authService;
             _jwtConfig = jwtConfig;
+            _logger = logger;
         }
 
         /// <summary>

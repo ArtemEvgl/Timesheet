@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Timesheet.Api.Models;
 using Timesheet.Domain;
 using Timesheet.Domain.Models;
@@ -16,15 +14,22 @@ namespace Timesheet.Api.Controllers
     {
         private readonly ITimeSheetService _timeSheetService;
         private readonly IMapper _mapper;
-        public TimesheetController(ITimeSheetService timeSheetService, IMapper mapper)
+        private readonly ILogger<TimesheetController> _logger;
+
+        public TimesheetController(ITimeSheetService timeSheetService,
+            IMapper mapper,
+            ILogger<TimesheetController> logger)
         {
             _timeSheetService = timeSheetService;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpPost]
         public ActionResult<bool> TrackTime(CreateTimeLogRequest request)
         {
+            _logger.LogInformation("Пользователь фиксирует рабочее время" + JsonConvert.SerializeObject(request, Formatting.Indented));
+
             var lastName = (string)HttpContext.Items["LastName"];
 
             if (ModelState.IsValid)
@@ -32,6 +37,7 @@ namespace Timesheet.Api.Controllers
                 var timeLog = _mapper.Map<TimeLog>(request);
 
                 var result = _timeSheetService.TrackTime(timeLog, lastName);
+                _logger.LogInformation("Пользователь успешно зафиксирова время");
                 return Ok(result);
             }
 
