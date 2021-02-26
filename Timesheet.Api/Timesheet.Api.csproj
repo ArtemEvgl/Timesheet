@@ -1,31 +1,48 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UserSecretsId>eca6976c-ae68-405b-82ff-6fcfe6ed1a34</UserSecretsId>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netcoreapp3.1</TargetFramework>
+		<UserSecretsId>eca6976c-ae68-405b-82ff-6fcfe6ed1a34</UserSecretsId>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="10.1.1" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
-    <PackageReference Include="FluentValidation" Version="9.4.0" />
-    <PackageReference Include="FluentValidation.AspNetCore" Version="9.4.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.11" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.11">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
-  </ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DocumentationFile>E:\projects\Timesheet\Timesheet.Api\Timesheet.Api.xml</DocumentationFile>
+		<NoWarn>1701;1702;1591</NoWarn>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Timesheet.Application\Timesheet.BussinessLogic.csproj" />
-    <ProjectReference Include="..\Timesheet.DataAccess.csv\Timesheet.DataAccess.csv.csproj" />
-    <ProjectReference Include="..\Timesheet.DataAccess.MSSQL\Timesheet.DataAccess.MSSQL.csproj" />
-    <ProjectReference Include="..\Timesheet.Integrations.GitHub\Timesheet.Integrations.GitHub.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="10.1.1" />
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
+		<PackageReference Include="FluentValidation" Version="9.4.0" />
+		<PackageReference Include="FluentValidation.AspNetCore" Version="9.4.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.0" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.11" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.11">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+		<PackageReference Include="NLog" Version="4.7.7" />
+		<PackageReference Include="NLog.Web.AspNetCore" Version="4.10.0" />
+		<PackageReference Include="NSwag.AspNetCore" Version="13.10.2" />
+		<PackageReference Include="NSwag.MSBuild" Version="13.10.2">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.0.4" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
+	</ItemGroup>
 
+	<ItemGroup>
+		<ProjectReference Include="..\Timesheet.Application\Timesheet.BussinessLogic.csproj" />
+		<ProjectReference Include="..\Timesheet.DataAccess.csv\Timesheet.DataAccess.csv.csproj" />
+		<ProjectReference Include="..\Timesheet.DataAccess.MSSQL\Timesheet.DataAccess.MSSQL.csproj" />
+		<ProjectReference Include="..\Timesheet.Integrations.GitHub\Timesheet.Integrations.GitHub.csproj" />
+	</ItemGroup>
 
+	<Target Name="NSwag" AfterTargets="PostBuildEvent">
+		<Exec EnvironmentVariables="ASPNETCORE_ENVIRONMENT=Development" Command="$(NSwagExe_Core31) aspnetcore2openapi /project:$(ProjectPath) /noBuild:true /outputType:OpenApi3 /output:swagger.json" />
+		<Exec Command="$(NSwagExe_Core31) openapi2csclient /input:swagger.json /output:../Timesheet.Api.ClientSDK/TimesheetAPI.cs" />
+	</Target>
+	
 </Project>
